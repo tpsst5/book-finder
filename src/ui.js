@@ -10,10 +10,9 @@ class UI {
     let output = '';
 
     // Book constructor
-    function Book(index, title, subtitle, author, description, category, link, image) {
+    function Book(index, title, author, description, category, link, image) {
       this.index = index;
       this.title = title;
-      this.subtitle = subtitle;
       this.author = author;
       this.description = description;
       this.category = category;
@@ -26,7 +25,6 @@ class UI {
       bookList.push(new Book(
         index,
         book.volumeInfo.title,
-        book.volumeInfo.subtitle,
         book.volumeInfo.authors,
         book.volumeInfo.description,
         book.volumeInfo.categories,
@@ -40,41 +38,22 @@ class UI {
     bookList.forEach(book => {
       console.log(book.title);
       output += `
-        <div class="card mb-3">
+        <div class="card mb-3 p-3 bg-dark">
           <div class="row">
-            <div class="col">
-              <img src="${book.image}" alt="book image" class="img-fluid">
+            <div class="col-3">
+              <a target="_blank" href="${book.link}">
+                <img src="${book.image}" alt="book image" class="img-fluid">
+              </a>
             </div>
-            <div class="col p-2">
-              <p>Title: ${book.title}</p>
-              <p>Author: ${book.author}</p>
+            <div class="col-9 p-4">
+              <p class="text-white"><strong>Title: </strong>${book.title}</p>
+              <p class="text-white"><strong>Author: </strong>${book.author}</p>
+              <p class="text-white">${book.description || `<i>No description available</i>`}</p>
             </div>
           </div>
         </div>
       `;
     });
-    // output += `
-    //   <div class="card">
-    //     <div class="card-body">
-    //       <div class="row"
-    //         <div class="col-6>
-    //         <img src="${book.image}" alt="book image" class="img-fluid">
-    //         </div>
-    //         <div class="col-6>
-    //           <p>Title: ${book.title}</p>
-    //           <br>
-    //           <p>${book.subtitle}</p>
-    //           <br>
-    //           <p>Author: ${book.author}</p>
-    //           <br>
-    //           <p>${book.description}</p>
-    //           <br>
-    //           <a target="_blank" href="${book.link}">More info</a>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // `;
 
     this.modalBody.innerHTML = output;
   }
