@@ -8,9 +8,10 @@ class UI {
     console.log(books);
     let bookList = [];
 
+    // Book constructor
     function Book(index, title, subtitle, author, description, category, link, image) {
-      this.index = index,
-        this.title = title;
+      this.index = index;
+      this.title = title;
       this.subtitle = subtitle;
       this.author = author;
       this.description = description;
@@ -19,6 +20,7 @@ class UI {
       this.image = image;
     }
 
+    // Add each book from API to bookList array
     books.forEach((book, index) => {
       bookList.push(new Book(
         index,
@@ -31,8 +33,12 @@ class UI {
         book.volumeInfo.imageLinks.smallThumbnail
       ));
     });
-
     console.log(bookList);
+
+    // Display the search results in the modal
+    bookList.forEach(book => {
+
+    });
   }
 }
 
