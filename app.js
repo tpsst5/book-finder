@@ -5,6 +5,13 @@ document.querySelector('.btn-search').addEventListener('click', searchBooks);
 const http = new HTTP;
 
 function searchBooks() {
-  console.log(document.querySelector('#search-input').value);
-  if (!document.querySelector('#search-input').value) alert('Enter search item');
+  let BookData;
+  const searchInput = document.querySelector('#search-input').value;
+
+  if (!searchInput) alert('Enter search item');
+
+  http.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
+    .then(data => bookData = data.items)
+    .catch(err => console.log(err));
+
 }
