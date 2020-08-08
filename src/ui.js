@@ -38,25 +38,43 @@ class UI {
 
     // Display the search results in the modal
     bookList.forEach(book => {
+      console.log(book.title);
       output += `
-        <div class="card">
-          <div class="card-body">
-            <div class="row"
-              <div class="col-6>
+        <div class="card mb-3">
+          <div class="row">
+            <div class="col">
               <img src="${book.image}" alt="book image" class="img-fluid">
-              </div>
-              <div class="col-6>
-                <p>Title: ${book.title}</p>
-                <p>${book.subtitle}</p>
-                <p>Author: ${book.author}</p>
-                <p>${book.description}</p>
-                <a target="_blank" href="${book.link}">More info</a>
-              </div>
+            </div>
+            <div class="col p-2">
+              <p>Title: ${book.title}</p>
+              <p>Author: ${book.author}</p>
             </div>
           </div>
         </div>
       `;
     });
+    // output += `
+    //   <div class="card">
+    //     <div class="card-body">
+    //       <div class="row"
+    //         <div class="col-6>
+    //         <img src="${book.image}" alt="book image" class="img-fluid">
+    //         </div>
+    //         <div class="col-6>
+    //           <p>Title: ${book.title}</p>
+    //           <br>
+    //           <p>${book.subtitle}</p>
+    //           <br>
+    //           <p>Author: ${book.author}</p>
+    //           <br>
+    //           <p>${book.description}</p>
+    //           <br>
+    //           <a target="_blank" href="${book.link}">More info</a>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // `;
 
     this.modalBody.innerHTML = output;
   }
