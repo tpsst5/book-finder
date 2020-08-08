@@ -5,8 +5,34 @@ class UI {
 
   // Show searched books
   showBooks(books) {
-    window.location = 'books.html';
     console.log(books);
+    let bookList = [];
+
+    function Book(index, title, subtitle, author, description, category, link, image) {
+      this.index = index,
+        this.title = title;
+      this.subtitle = subtitle;
+      this.author = author;
+      this.description = description;
+      this.category = category;
+      this.link = link;
+      this.image = image;
+    }
+
+    books.forEach((book, index) => {
+      bookList.push(new Book(
+        index,
+        book.volumeInfo.title,
+        book.volumeInfo.subtitle,
+        book.volumeInfo.authors,
+        book.volumeInfo.description,
+        book.volumeInfo.categories,
+        book.volumeInfo.infoLink,
+        book.volumeInfo.imageLinks.smallThumbnail
+      ));
+    });
+
+    console.log(bookList);
   }
 }
 
