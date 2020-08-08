@@ -1,12 +1,13 @@
 class UI {
   constructor() {
-    // this.book =
+    this.modalBody = document.querySelector('.modal-body');
   }
 
   // Show searched books
   showBooks(books) {
     console.log(books);
     let bookList = [];
+    let output = '';
 
     // Book constructor
     function Book(index, title, subtitle, author, description, category, link, image) {
@@ -37,8 +38,27 @@ class UI {
 
     // Display the search results in the modal
     bookList.forEach(book => {
-
+      output += `
+        <div class="card">
+          <div class="card-body">
+            <div class="row"
+              <div class="col-6>
+              <img src="${book.image}" alt="book image" class="img-fluid">
+              </div>
+              <div class="col-6>
+                <p>Title: ${book.title}</p>
+                <p>${book.subtitle}</p>
+                <p>Author: ${book.author}</p>
+                <p>${book.description}</p>
+                <a target="_blank" href="${book.link}">More info</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     });
+
+    this.modalBody.innerHTML = output;
   }
 }
 
