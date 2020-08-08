@@ -47,3 +47,5 @@ class HTTP {
     return resData;
   }
 }
+
+export const http = new HTTP();
