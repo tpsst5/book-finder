@@ -23,6 +23,14 @@ class UI {
 
     // Add each book from API to bookList array
     books.forEach((book, index) => {
+      let img = null;
+      // Check if image available
+      if (!book.volumeInfo.imageLinks) {
+        img = 'No image';
+      } else {
+        img = book.volumeInfo.imageLinks.smallThumbnail;
+      }
+
       bookList.push(new Book(
         index,
         book.volumeInfo.title,
@@ -30,10 +38,9 @@ class UI {
         book.volumeInfo.description,
         book.volumeInfo.categories,
         book.volumeInfo.infoLink,
-        book.volumeInfo.imageLinks.smallThumbnail
+        img
       ));
     });
-    console.log(bookList);
 
     // Display the search results in the modal
     bookList.forEach(book => {
@@ -46,8 +53,8 @@ class UI {
               </a>
             </div>
             <div class="col-9 p-4">
-              <p class="text-white"><strong>Title: </strong>${book.title}</p>
-              <p class="text-white"><strong>Author: </strong>${book.author}</p>
+              <p class="text-white" id="title-${book.index}"><strong>Title: </strong>${book.title}</p>
+              <p class="text-white" id="author-${book.index}"><strong>Author: </strong>${book.author}</p>
               <hr class="bg-light">
               <p class="text-white text-wrap">${book.description || `<i>No description available</i>`}</p>
               <button type="button" data-id="${book.index}" id="book-${book.index}" class="btn btn-block btn-outline-light add-book">Add Book</button>
@@ -82,15 +89,39 @@ class UI {
       // console.log(event.target);
 
       if (event.target.classList.contains('add-book')) {
-        // console.log(event.target.id);
-        addSelectedBook(event.target.id);
+        // console.log(event.target);
+        addSelectedBook(event.target);
       }
     }
 
     // Check to see if book is in library then add book
     function addSelectedBook(book) {
-      console.log(book);
-      console.log(libraryBody.children);
+      const title = book.parentElement.firstElementChild.innerText
+        .slice(7)
+        .toUpperCase();
+      const author = book.parentElement.firstElementChild.nextElementSibling.innerText
+        .slice(8)
+        .toUpperCase();
+      // console.log(title);
+      // console.log(author);
+
+      const currentBooks = Array.from(libraryBody.children);
+      // console.log(currentBooks);
+      currentBooks.forEach(book => {
+        let libraryTitle = book.firstElementChild.innerText
+          .toUpperCase();
+        let libraryAuthor = book.firstElementChild.nextElementSibling.innerText
+          .toUpperCase();
+
+        if (title === libraryTitle && author === libraryAuthor) {
+          console.log('skip this book');
+        }
+
+        console.log('Library Author: ', libraryAuthor);
+        console.log('Selection Author: ', author);
+        console.log('Library Title: ', libraryTitle);
+        console.log('Selection Title: ', title);
+      });
     }
   }
 }
