@@ -1,12 +1,11 @@
 class UI {
   constructor() {
-    this.modalBody = document.querySelector('.modal-body');
     this.modalLabel = document.querySelector('#modalLabel');
+    this.modalBody = document.querySelector('.modal-body');
   }
 
   // Show searched books
   showBooks(books) {
-    console.log(books);
     this.modalLabel.textContent = 'Search results';
     let bookList = [];
     let output = '';
@@ -51,15 +50,22 @@ class UI {
               <p class="text-white"><strong>Author: </strong>${book.author}</p>
               <hr class="bg-light">
               <p class="text-white text-wrap">${book.description || `<i>No description available</i>`}</p>
-              <button type="button" class="btn btn-block btn-outline-light">Add Book</button>
+              <button type="button" id="index-${book.index} class="btn btn-block btn-outline-light add-book">Add Book</button>
             </div>
           </div>
         </div>
       `;
     });
 
-
     this.modalBody.innerHTML = output;
+
+
+    // Add a book from list to library
+    document.querySelector('.add-book').addEventListener('click', addBook);
+
+    function addBook() {
+      console.log('book added...');
+    }
   }
 
   // Display error when input is blank
