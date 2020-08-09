@@ -50,7 +50,7 @@ class UI {
               <p class="text-white"><strong>Author: </strong>${book.author}</p>
               <hr class="bg-light">
               <p class="text-white text-wrap">${book.description || `<i>No description available</i>`}</p>
-              <button type="button" id="index-${book.index} class="btn btn-block btn-outline-light add-book">Add Book</button>
+              <button type="button" data-id="${book.index}" id="book-${book.index}" class="btn btn-block btn-outline-light add-book">Add Book</button>
             </div>
           </div>
         </div>
@@ -58,14 +58,6 @@ class UI {
     });
 
     this.modalBody.innerHTML = output;
-
-
-    // Add a book from list to library
-    document.querySelector('.add-book').addEventListener('click', addBook);
-
-    function addBook() {
-      console.log('book added...');
-    }
   }
 
   // Display error when input is blank
@@ -77,6 +69,29 @@ class UI {
         Please enter a book title or author in search field
       </div>
     `
+  }
+
+  // Add a book from list to library
+  addBook() {
+    // Variables and Event Listeners
+    const libraryBody = document.querySelector('#library-body');
+    this.modalBody.addEventListener('click', bookSelected);
+
+    // Select a book
+    function bookSelected(event) {
+      // console.log(event.target);
+
+      if (event.target.classList.contains('add-book')) {
+        // console.log(event.target.id);
+        addSelectedBook(event.target.id);
+      }
+    }
+
+    // Check to see if book is in library then add book
+    function addSelectedBook(book) {
+      console.log(book);
+      console.log(libraryBody.children);
+    }
   }
 }
 

@@ -27,6 +27,7 @@ function searchBooks() {
       </div>
       `)
       .then(data => ui.showBooks(data.items))
+      .then(ui.addBook())
       .catch(err => console.log(err));
   }
 }
