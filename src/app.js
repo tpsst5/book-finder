@@ -13,10 +13,14 @@ document.querySelector('.btn-search').addEventListener('click', searchBooks);
 function searchBooks() {
   const searchInput = document.querySelector('#search-input').value;
 
-  if (!searchInput) alert('Enter search item');
+  if (!searchInput) {
+    console.log('test');
+    ui.showError();
+  } else {
+    http.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
+      .then(data => ui.showBooks(data.items))
+      .catch(err => console.log(err));
+  }
 
-  http.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
-    .then(data => ui.showBooks(data.items))
-    .catch(err => console.log(err));
 
 }

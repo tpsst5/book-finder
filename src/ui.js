@@ -1,11 +1,13 @@
 class UI {
   constructor() {
     this.modalBody = document.querySelector('.modal-body');
+    this.modalLabel = document.querySelector('#modalLabel');
   }
 
   // Show searched books
   showBooks(books) {
     console.log(books);
+    this.modalLabel.textContent = 'Search results';
     let bookList = [];
     let output = '';
 
@@ -36,9 +38,8 @@ class UI {
 
     // Display the search results in the modal
     bookList.forEach(book => {
-      console.log(book.title);
       output += `
-        <div class="card mb-3 p-3 bg-dark">
+        <div class="card my-4 p-3 bg-dark">
           <div class="row">
             <div class="col-3">
               <a target="_blank" href="${book.link}">
@@ -48,14 +49,22 @@ class UI {
             <div class="col-9 p-4">
               <p class="text-white"><strong>Title: </strong>${book.title}</p>
               <p class="text-white"><strong>Author: </strong>${book.author}</p>
+              <hr class="bg-light">
               <p class="text-white">${book.description || `<i>No description available</i>`}</p>
+              <button type="button" class="btn btn-block btn-outline-light">Add Book</button>
             </div>
           </div>
         </div>
       `;
     });
 
+
     this.modalBody.innerHTML = output;
+  }
+
+  // Display error when input is blank
+  showError() {
+    this.modalLabel.textContent = 'Error';
   }
 }
 
