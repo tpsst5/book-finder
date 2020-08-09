@@ -50,7 +50,7 @@ class UI {
               <p class="text-white"><strong>Title: </strong>${book.title}</p>
               <p class="text-white"><strong>Author: </strong>${book.author}</p>
               <hr class="bg-light">
-              <p class="text-white">${book.description || `<i>No description available</i>`}</p>
+              <p class="text-white text-wrap">${book.description || `<i>No description available</i>`}</p>
               <button type="button" class="btn btn-block btn-outline-light">Add Book</button>
             </div>
           </div>
@@ -65,6 +65,12 @@ class UI {
   // Display error when input is blank
   showError() {
     this.modalLabel.textContent = 'Error';
+
+    this.modalBody.innerHTML = `
+      <div class="alert alert-danger text-center">
+        Please enter a book title or author in search field
+      </div>
+    `
   }
 }
 
