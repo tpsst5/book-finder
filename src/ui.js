@@ -79,49 +79,65 @@ class UI {
   }
 
   // Add a book from list to library
-  addBook() {
+  addBook(books) {
     // Variables and Event Listeners
     const libraryBody = document.querySelector('#library-body');
+    let selectedTitle = null;
+    let selectedAuthor = null;
+    let selectedGenre = null;
+    let selectedId = null
     this.modalBody.addEventListener('click', bookSelected);
 
     // Select a book
     function bookSelected(event) {
-      // console.log(event.target);
-
       if (event.target.classList.contains('add-book')) {
-        // console.log(event.target);
         addSelectedBook(event.target);
       }
     }
 
     // Check to see if book is in library then add book
     function addSelectedBook(book) {
-      const title = book.parentElement.firstElementChild.innerText
-        .slice(7)
-        .toUpperCase();
-      const author = book.parentElement.firstElementChild.nextElementSibling.innerText
-        .slice(8)
-        .toUpperCase();
-      // console.log(title);
-      // console.log(author);
+      selectedTitle = book.parentElement.firstElementChild.innerText
+        .slice(7);
+      selectedAuthor = book.parentElement.firstElementChild.nextElementSibling.innerText
+        .slice(8);
+      selectedId = book.getAttribute('data-id');
+
+      // Check if genre is available for selected book
+      if (!books[selectedId].volumeInfo.categories) {
+        selectedGenre = 'Not available';
+      } else {
+        selectedGenre = books[selectedId].volumeInfo.categories[0];
+      }
 
       const currentBooks = Array.from(libraryBody.children);
-      // console.log(currentBooks);
+      let inLibrary = false;
+
+      // Check each book title and author in current library
       currentBooks.forEach(book => {
         let libraryTitle = book.firstElementChild.innerText
           .toUpperCase();
         let libraryAuthor = book.firstElementChild.nextElementSibling.innerText
           .toUpperCase();
 
-        if (title === libraryTitle && author === libraryAuthor) {
-          console.log('skip this book');
+        // Check if exact book selected is in library
+        if (selectedTitle.toUpperCase() === libraryTitle && selectedAuthor.toUpperCase() === libraryAuthor) {
+          inLibrary = true;
         }
-
-        console.log('Library Author: ', libraryAuthor);
-        console.log('Selection Author: ', author);
-        console.log('Library Title: ', libraryTitle);
-        console.log('Selection Title: ', title);
       });
+
+      // Add to library
+      if (inLibrary === false) {
+        let newBookElement = `  <tr>
+          <td>${selectedTitle}</td>
+          <td>${selectedAuthor}</td>
+          <td>${selectedGenre}</td>
+        </tr>
+        `;
+        let updatedLibrary = libraryBody.innerHTML + newBookElement;
+
+        libraryBody.innerHTML = updatedLibrary;
+      }
     }
   }
 }

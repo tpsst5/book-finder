@@ -26,8 +26,11 @@ function searchBooks() {
         </div>
       </div>
       `)
-      .then(data => ui.showBooks(data.items))
-      .then(ui.addBook())
+      .then(data => {
+        ui.showBooks(data.items);
+        ui.addBook(data.items);
+      })
+      // .then(ui.addBook())
       .catch(err => console.log(err));
   }
 }
