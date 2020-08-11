@@ -1,3 +1,11 @@
-/* #sign-in {
-  background-color: ;
-} */
+.action-icons {
+  width: 8%;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}

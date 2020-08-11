@@ -132,11 +132,32 @@ class UI {
           <td>${selectedTitle}</td>
           <td>${selectedAuthor}</td>
           <td>${selectedGenre}</td>
+          <td class="action-icons">
+          <a href="#" class="text-warning edit card-link" data-id="tbd">
+            <i class="fa fa-pencil"></i>
+          </a>
+          <a href="#" class="text-danger delete card-link" data-id="tbd">
+            <i class="fa fa-remove"></i>
+          </a>
+        </td>
         </tr>
         `;
         let updatedLibrary = libraryBody.innerHTML + newBookElement;
-
+        // Update library html
         libraryBody.innerHTML = updatedLibrary;
+        // Show success alert
+        document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade show";
+        // Hide alert after 3 seconds
+        setTimeout(function () {
+          document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade hide";
+        }, 3000);
+      } else {
+        // Book already in library. Show alert
+        document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade show";
+        // Hide after 3 seconds
+        setTimeout(function () {
+          document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade hide";
+        }, 3000);
       }
     }
   }

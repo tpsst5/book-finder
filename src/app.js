@@ -13,12 +13,12 @@ const modalBody = document.querySelector('.modal-body');
 
 // Search for books
 function searchBooks() {
-  const searchInput = document.querySelector('#search-input').value;
+  const searchInput = document.querySelector('#search-input');
 
-  if (!searchInput) {
+  if (!searchInput.value) {
     ui.showError();
   } else {
-    http.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
+    http.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput.value}`)
       .then(modalBody.innerHTML = `
       <div class="text-center">
         <div class="spinner-border" role="status">
@@ -29,8 +29,8 @@ function searchBooks() {
       .then(data => {
         ui.showBooks(data.items);
         ui.addBook(data.items);
+        searchInput.value = '';
       })
-      // .then(ui.addBook())
       .catch(err => console.log(err));
   }
 }
