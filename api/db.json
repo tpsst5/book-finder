@@ -10,6 +10,12 @@
       "title": "Born A Crime",
       "author": "Trevor Noah",
       "genre": "Non-Fiction"
+    },
+    {
+      "id": 3,
+      "title": "Eloquent JavaScript",
+      "author": "Marjin Haverbeke",
+      "genre": "Computer Science"
     }
   ]
 }

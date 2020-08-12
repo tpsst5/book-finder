@@ -2,10 +2,36 @@ class UI {
   constructor() {
     this.modalLabel = document.querySelector('#modalLabel');
     this.modalBody = document.querySelector('.modal-body');
+    this.libraryBody = document.querySelector('#library-body');
+  }
+
+  // Display saved books on DOM load
+  showBooks(data) {
+    let output = '';
+
+    data.forEach(book => {
+      output += `
+        <tr id="book-${book.id}">
+          <td class="title">${book.title}</td>
+          <td class="author">${book.author}</td>
+          <td class="genre">${book.genre}</td>
+          <td class="action-icons">
+            <a href="#" class="text-warning edit card-link" data-id="tbd">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <a href="#" class="text-danger delete card-link" data-id="tbd">
+              <i class="fa fa-remove"></i>
+            </a>
+          </td>
+        </tr>
+      `;
+    });
+
+    this.libraryBody.innerHTML = output;
   }
 
   // Show searched books
-  showBooks(books) {
+  searchBooks(books) {
     this.modalLabel.textContent = 'Search results';
     let bookList = [];
     let output = '';
@@ -32,7 +58,7 @@ class UI {
       }
 
       bookList.push(new Book(
-        index,
+        index, // PRETTY SURE I DONT NEED THIS. NEED AN INDEX FOR LIBRARY
         book.volumeInfo.title,
         book.volumeInfo.authors,
         book.volumeInfo.description,
@@ -82,10 +108,11 @@ class UI {
   addBook(books) {
     // Variables and Event Listeners
     const libraryBody = document.querySelector('#library-body');
+    const index = document.querySelector('#library-body').childElementCount + 1;
     let selectedTitle = null;
     let selectedAuthor = null;
     let selectedGenre = null;
-    let selectedId = null
+    let selectedId = null;
     this.modalBody.addEventListener('click', bookSelected);
 
     // Select a book
@@ -128,10 +155,10 @@ class UI {
 
       // Add to library
       if (inLibrary === false) {
-        let newBookElement = `  <tr>
-          <td>${selectedTitle}</td>
-          <td>${selectedAuthor}</td>
-          <td>${selectedGenre}</td>
+        let newBookElement = `  <tr id="book-${index}">
+          <td class="title">${selectedTitle}</td>
+          <td class="author">${selectedAuthor}</td>
+          <td class="genre">${selectedGenre}</td>
           <td class="action-icons">
           <a href="#" class="text-warning edit card-link" data-id="tbd">
             <i class="fa fa-pencil"></i>
