@@ -49,6 +49,12 @@ function editBook(e) {
   if (e.target.parentElement.classList.contains('edit-book')) {
     // Get row of book
     const parentRow = e.target.parentElement.parentElement.parentElement;
+    // Book Data
+    const id = parentRow.id;
+    const title = parentRow.firstElementChild.textContent;
+    const author = parentRow.firstElementChild.nextElementSibling.textContent;
+    const genre = parentRow.lastElementChild.previousElementSibling.textContent;
+
     // Make book row items editable
     parentRow.contentEditable = 'true';
     // Get body element for event listener
@@ -58,29 +64,27 @@ function editBook(e) {
       // Listen for click outside row
       body.addEventListener('click', function () {
         parentRow.contentEditable = 'false';
-        // call ui function to update data structure here
+        // Book Data
+        const id = parentRow.id;
+        const title = parentRow.firstElementChild.textContent;
+        const author = parentRow.firstElementChild.nextElementSibling.textContent;
+        const genre = parentRow.lastElementChild.previousElementSibling.textContent;
+        const book = {
+          id,
+          title,
+          author,
+          genre
+        }
+        // Update library database
+        http.put(`http://localhost:3000/books/${id}`, book)
+          .then(data => console.log('Library updated'))
+          .catch(err => console.log(err));
       }, false);
       // Listen for click on/in row
       parentRow.addEventListener('click', function (e) {
-        // console.log('still editing');
         e.stopPropagation();
       }, false);
     }, 250);
-
-    // const id = parentRow.id;
-    // const title = parentRow.firstElementChild.textContent;
-    // const author = parentRow.firstElementChild.nextElementSibling.textContent;
-    // const genre = parentRow.lastElementChild.previousElementSibling.textContent;
-
-    // const book = {
-    //   id,
-    //   title,
-    //   author,
-    //   genre
-    // }
-
-    // Make selection editable
-    // ui.editSelectedBook(book);
   }
 
   e.preventDefault();

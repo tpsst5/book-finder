@@ -192,12 +192,6 @@ class UI {
       }
     }
   }
-
-
-  // Edit selected book
-  editSelectedBook(book) {
-
-  }
 }
 
 export const ui = new UI();

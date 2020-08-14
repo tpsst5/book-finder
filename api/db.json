@@ -1,15 +1,16 @@
 {
-  "books": [{
+  "books": [
+    {
       "id": 1,
       "title": "The Two Towers",
       "author": "J.R.R. Tolkien",
-      "genre": "Fiction"
+      "genre": "Fiction/Fantasy"
     },
     {
       "id": 2,
       "title": "Born A Crime",
       "author": "Trevor Noah",
-      "genre": "Non-Fiction"
+      "genre": "Non-Fiction/Biography"
     }
   ]
 }
