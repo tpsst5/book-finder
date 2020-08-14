@@ -46,13 +46,48 @@ function searchBooks() {
 
 // Edit a book
 function editBook(e) {
-  console.log(e.target);
+  if (e.target.parentElement.classList.contains('edit-book')) {
+    // Get row of book
+    const parentRow = e.target.parentElement.parentElement.parentElement;
+    // Make book row items editable
+    parentRow.contentEditable = 'true';
+    // Get body element for event listener
+    const body = document.getElementsByTagName('BODY')[0];
+
+    setTimeout(function () {
+      // Listen for click outside row
+      body.addEventListener('click', function () {
+        parentRow.contentEditable = 'false';
+        // call ui function to update data structure here
+      }, false);
+      // Listen for click on/in row
+      parentRow.addEventListener('click', function (e) {
+        // console.log('still editing');
+        e.stopPropagation();
+      }, false);
+    }, 250);
+
+    // const id = parentRow.id;
+    // const title = parentRow.firstElementChild.textContent;
+    // const author = parentRow.firstElementChild.nextElementSibling.textContent;
+    // const genre = parentRow.lastElementChild.previousElementSibling.textContent;
+
+    // const book = {
+    //   id,
+    //   title,
+    //   author,
+    //   genre
+    // }
+
+    // Make selection editable
+    // ui.editSelectedBook(book);
+  }
 
   e.preventDefault();
 }
 
 function deleteBook(e) {
-  console.log(e.target);
+  // console.log(e.target);
 
   e.preventDefault();
 }
