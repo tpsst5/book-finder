@@ -1,6 +1,5 @@
 {
-  "books": [
-    {
+  "books": [{
       "id": 1,
       "title": "The Two Towers",
       "author": "J.R.R. Tolkien",
@@ -11,30 +10,6 @@
       "title": "Born A Crime",
       "author": "Trevor Noah",
       "genre": "Non-Fiction"
-    },
-    {
-      "id": 3,
-      "title": "City Maps Nay Pyi Taw Myanmar Burma",
-      "author": "James mcFee",
-      "genre": "Travel"
-    },
-    {
-      "id": 4,
-      "title": "England:-County of Norfolk, by R. Henry Rew. C.-7915.-Selected districts in the counties of Oxford, Gloucester, Wilts, and Berks, and on the neighbourhood of Taunton, Somerset, by Aubrey J. Spencer. Frome district of Somerset and the Stratford-on-Avon district of Warwickshire, by Jabez Turner. C.-7372.-County of Suffolk, by Arthur Wilson Fox. C.-7755.-Poultry rearing and fattening industry of the Heathfield district of Sussex, by R. Henry Rew. C.-7623.-Salisbury Plain district of Wiltshire, by R. Henry Rew. C.-7624. Scotland:-Counties of Ayr, Wigtown, Kirkcudbright, and Dumfries, by John Speir. C.-7625.-Counties of Perth, Fife, Forfar, and Aberdeen, by James",
-      "author": "Great Britain. Royal Commission on Agriculture",
-      "genre": "Not available"
-    },
-    {
-      "id": 5,
-      "title": "Dion",
-      "author": "Walter Rew",
-      "genre": "Postal service"
-    },
-    {
-      "id": 6,
-      "title": "Jamaica Tag-Along",
-      "author": "Juanita Havill",
-      "genre": "Travel"
     }
   ]
 }

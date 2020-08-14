@@ -9,6 +9,8 @@ import {
 // Event Listeners & Variables
 document.querySelector('.btn-search').addEventListener('click', searchBooks);
 document.addEventListener('DOMContentLoaded', getBooks);
+document.querySelector('#library-body').addEventListener('click', editBook);
+document.querySelector('#library-body').addEventListener('click', deleteBook);
 const modalBody = document.querySelector('.modal-body');
 
 // Get books on DOM load
@@ -40,4 +42,17 @@ function searchBooks() {
       })
       .catch(err => console.log(err));
   }
+}
+
+// Edit a book
+function editBook(e) {
+  console.log(e.target);
+
+  e.preventDefault();
+}
+
+function deleteBook(e) {
+  console.log(e.target);
+
+  e.preventDefault();
 }

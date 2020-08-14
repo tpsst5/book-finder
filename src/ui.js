@@ -20,10 +20,10 @@ class UI {
           <td class="author">${book.author}</td>
           <td class="genre">${book.genre}</td>
           <td class="action-icons">
-            <a href="#" class="text-warning edit card-link" data-id="tbd">
+            <a href="#" id="edit-${book.id}" class="text-warning edit-book card-link">
               <i class="fa fa-pencil"></i>
             </a>
-            <a href="#" class="text-danger delete card-link" data-id="tbd">
+            <a href="#" id="delete-${book.id}" class="text-danger delete-book card-link">
               <i class="fa fa-remove"></i>
             </a>
           </td>
