@@ -1,3 +1,7 @@
+import {
+  http
+} from './http';
+
 class UI {
   constructor() {
     this.modalLabel = document.querySelector('#modalLabel');
@@ -5,13 +9,13 @@ class UI {
     this.libraryBody = document.querySelector('#library-body');
   }
 
+
   // Display saved books on DOM load
   showBooks(data) {
     let output = '';
-
     data.forEach(book => {
       output += `
-        <tr id="book-${book.id}">
+        <tr id="${book.id}">
           <td class="title">${book.title}</td>
           <td class="author">${book.author}</td>
           <td class="genre">${book.genre}</td>
@@ -83,7 +87,7 @@ class UI {
               <p class="text-white" id="author-${book.index}"><strong>Author: </strong>${book.author}</p>
               <hr class="bg-light">
               <p class="text-white text-wrap">${book.description || `<i>No description available</i>`}</p>
-              <button type="button" data-id="${book.index}" id="book-${book.index}" class="btn btn-block btn-outline-light add-book">Add Book</button>
+              <button type="button" data-id="${book.index}" id="${book.index}" class="btn btn-block btn-outline-light add-book">Add Book</button>
             </div>
           </div>
         </div>
@@ -92,6 +96,7 @@ class UI {
 
     this.modalBody.innerHTML = output;
   }
+
 
   // Display error when input is blank
   showError() {
@@ -104,15 +109,13 @@ class UI {
     `
   }
 
+
   // Add a book from list to library
   addBook(books) {
-    // Variables and Event Listeners
-    const libraryBody = document.querySelector('#library-body');
-    const index = document.querySelector('#library-body').childElementCount + 1;
-    let selectedTitle = null;
-    let selectedAuthor = null;
-    let selectedGenre = null;
-    let selectedId = null;
+
+    // GETTING ERROR THAT PROGRESSES IN STAGES. STARTS ONCE YOU CLOSE MODULE AND TRY TO ADD ANOTHER BOOK. THEN AFTER YOU CLOSE THE MODULE AGAIN AND TRY TO ADD ANOTHER BOOK YOU GET BOTH THE SUCCESS AND FAIL ALERTS
+
+    // Listen for click event inside modal display
     this.modalBody.addEventListener('click', bookSelected);
 
     // Select a book
@@ -122,69 +125,70 @@ class UI {
       }
     }
 
-    // Check to see if book is in library then add book
     function addSelectedBook(book) {
-      selectedTitle = book.parentElement.firstElementChild.innerText
-        .slice(7);
-      selectedAuthor = book.parentElement.firstElementChild.nextElementSibling.innerText
-        .slice(8);
-      selectedId = book.getAttribute('data-id');
+      // Variables
+      const selectedId = book.getAttribute('data-id');
+      const lastBookId = Number(document.querySelector('#library-body').lastElementChild.id);
+      const id = lastBookId + 1;
+      const title = book.parentElement.firstElementChild.innerText.slice(7);
+      const author = book.parentElement.firstElementChild.nextElementSibling.innerText.slice(8);
 
+      let genre = '';
       // Check if genre is available for selected book
       if (!books[selectedId].volumeInfo.categories) {
-        selectedGenre = 'Not available';
+        genre = 'Not available';
       } else {
-        selectedGenre = books[selectedId].volumeInfo.categories[0];
+        genre = books[selectedId].volumeInfo.categories[0];
       }
+      // Book to be added to library
+      const newBook = {
+        id,
+        title,
+        author,
+        genre
+      }
+      // Get current book database to check if selected book is in library
+      http.get('http://localhost:3000/books/')
+        .then(data => checkLibrary(data))
+        .catch(err => console.log(err))
 
-      const currentBooks = Array.from(libraryBody.children);
-      let inLibrary = false;
+      function checkLibrary(data) {
+        let inLibrary = null;
+        data.forEach(book => {
+          if (book.title === newBook.title && book.author === newBook.author) {
+            inLibrary = true;
+          }
+        });
+        // If book is already in library display error. If not continue
+        if (inLibrary === true) {
+          // Show error since book is already in library
+          document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade show";
+          // Hide after 3 seconds
+          setTimeout(function () {
+            document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade hide";
+          }, 3000);
+        } else {
+          // POST book to library
+          http.post('http://localhost:3000/books', newBook)
+            .then(data => refreshLibrary())
+            .catch(err => console.log(err));
 
-      // Check each book title and author in current library
-      currentBooks.forEach(book => {
-        let libraryTitle = book.firstElementChild.innerText
-          .toUpperCase();
-        let libraryAuthor = book.firstElementChild.nextElementSibling.innerText
-          .toUpperCase();
-
-        // Check if exact book selected is in library
-        if (selectedTitle.toUpperCase() === libraryTitle && selectedAuthor.toUpperCase() === libraryAuthor) {
-          inLibrary = true;
+          // GET data and refresh library UI
+          function refreshLibrary() {
+            http.get('http://localhost:3000/books/')
+              .then(data => ui.showBooks(data))
+              .then(successAlert())
+              .catch(err => console.log(err))
+          }
+          // Show success alert
+          function successAlert() {
+            document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade show";
+            // Hide alert after 3 seconds
+            setTimeout(function () {
+              document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade hide";
+            }, 3000);
+          }
         }
-      });
-
-      // Add to library
-      if (inLibrary === false) {
-        let newBookElement = `  <tr id="book-${index}">
-          <td class="title">${selectedTitle}</td>
-          <td class="author">${selectedAuthor}</td>
-          <td class="genre">${selectedGenre}</td>
-          <td class="action-icons">
-          <a href="#" class="text-warning edit card-link" data-id="tbd">
-            <i class="fa fa-pencil"></i>
-          </a>
-          <a href="#" class="text-danger delete card-link" data-id="tbd">
-            <i class="fa fa-remove"></i>
-          </a>
-        </td>
-        </tr>
-        `;
-        let updatedLibrary = libraryBody.innerHTML + newBookElement;
-        // Update library html
-        libraryBody.innerHTML = updatedLibrary;
-        // Show success alert
-        document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade show";
-        // Hide alert after 3 seconds
-        setTimeout(function () {
-          document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade hide";
-        }, 3000);
-      } else {
-        // Book already in library. Show alert
-        document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade show";
-        // Hide after 3 seconds
-        setTimeout(function () {
-          document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade hide";
-        }, 3000);
       }
     }
   }

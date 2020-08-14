@@ -11,7 +11,7 @@ class HTTP {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-type': 'appication/json'
+        'Content-type': 'application/json'
       },
       body: JSON.stringify(data)
     });
@@ -25,7 +25,7 @@ class HTTP {
     const response = await fetch(url, {
       method: 'PUT',
       headers: {
-        'Content-type': 'appication/json'
+        'Content-type': 'application/json'
       },
       body: JSON.stringify(data)
     });
