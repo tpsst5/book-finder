@@ -128,8 +128,12 @@ class UI {
     function addSelectedBook(book) {
       // Variables
       const selectedId = book.getAttribute('data-id');
-      const lastBookId = Number(document.querySelector('#library-body').lastElementChild.id);
-      const id = lastBookId + 1;
+      let lastBookId = 0;
+      // Check if there are books in library then last book ID
+      if (document.querySelector('#library-body').lastElementChild) {
+        lastBookId = Number(document.querySelector('#library-body').lastElementChild.id);
+      }
+      let id = lastBookId + 1;
       const title = book.parentElement.firstElementChild.innerText.slice(7);
       const author = book.parentElement.firstElementChild.nextElementSibling.innerText.slice(8);
 

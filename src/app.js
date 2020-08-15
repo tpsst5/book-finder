@@ -49,12 +49,6 @@ function editBook(e) {
   if (e.target.parentElement.classList.contains('edit-book')) {
     // Get row of book
     const parentRow = e.target.parentElement.parentElement.parentElement;
-    // Book Data
-    const id = parentRow.id;
-    const title = parentRow.firstElementChild.textContent;
-    const author = parentRow.firstElementChild.nextElementSibling.textContent;
-    const genre = parentRow.lastElementChild.previousElementSibling.textContent;
-
     // Make book row items editable
     parentRow.contentEditable = 'true';
     // Get body element for event listener
@@ -77,7 +71,10 @@ function editBook(e) {
         }
         // Update library database
         http.put(`http://localhost:3000/books/${id}`, book)
-          .then(data => console.log('Library updated'))
+          .then(data => {
+            console.log('Library updated');
+            getBooks();
+          })
           .catch(err => console.log(err));
       }, false);
       // Listen for click on/in row
@@ -91,7 +88,18 @@ function editBook(e) {
 }
 
 function deleteBook(e) {
-  // console.log(e.target);
+  if (e.target.parentElement.classList.contains('delete-book')) {
+    // Get row of book
+    const parentRow = e.target.parentElement.parentElement.parentElement;
+    const id = parentRow.id;
+    parentRow.remove();
+    http.delete(`http://localhost:3000/books/${id}`)
+      .then(data => {
+        console.log('Book removed');
+        getBooks();
+      })
+      .catch(err => console.log(err));
+  }
 
   e.preventDefault();
 }
