@@ -1,3 +1,16 @@
 {
-  "books": []
+  "books": [
+    {
+      "id": 1,
+      "title": "The Afterlife of Edgar Allan Poe",
+      "author": "Scott Peeples",
+      "genre": "Biography"
+    },
+    {
+      "id": 2,
+      "title": "The Cambridge Companion to Edgar Allan Poe",
+      "author": "Kevin J. Hayes,University Kevin J Hayes",
+      "genre": "Biography & Autobiography"
+    }
+  ]
 }

@@ -196,6 +196,28 @@ class UI {
       }
     }
   }
+
+
+  // Show alert when book edited or deleted
+  alertUpdateDelete(type) {
+    if (type === 'edit') {
+      // Change alert text for edit and show alert
+      document.querySelector('#edit-del-alert').innerText = "Edit complete";
+      document.querySelector('#edit-del-alert').className = "alert alert-primary text-center fade show";
+      // Hide alert after 3 seconds
+      setTimeout(function () {
+        document.querySelector('#edit-del-alert').className = "alert alert-primary text-center fade hide";
+      }, 3000);
+    } else if (type === 'delete') {
+      // Change alert text for delete and show alert
+      document.querySelector('#edit-del-alert').innerText = "Book deleted";
+      document.querySelector('#edit-del-alert').className = "alert alert-danger text-center fade show";
+      // Hide alert after 3 seconds
+      setTimeout(function () {
+        document.querySelector('#edit-del-alert').className = "alert alert-danger text-center fade hide";
+      }, 3000);
+    }
+  }
 }
 
 export const ui = new UI();
