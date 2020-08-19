@@ -1,5 +1,10 @@
+#top-img,
+#bottom-img {
+  margin-top: 5rem;
+}
+
 .action-icons {
-  width: 8%;
+  min-width: 76px;
 }
 
 .hide {
@@ -8,4 +13,32 @@
 
 .show {
   display: block;
+}
+
+/* Tablet */
+@media(max-width: 991px) {
+
+  .main-item,
+  .jumbotron {
+    margin: auto;
+  }
+
+  #sign-in {
+    margin-top: 3rem;
+    min-width: 450px;
+  }
+}
+
+/* Smart Phone */
+@media(max-width: 500px) {
+
+  .main-item,
+  .jumbotron {
+    max-width: 350px;
+  }
+
+
+  #sign-in {
+    min-width: 350px;
+  }
 }

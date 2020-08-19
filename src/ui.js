@@ -157,6 +157,8 @@ class UI {
         .catch(err => console.log(err))
 
       function checkLibrary(data) {
+        console.log(newBook);
+        console.log(data);
         let inLibrary = null;
         data.forEach(book => {
           if (book.title === newBook.title && book.author === newBook.author) {
