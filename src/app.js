@@ -77,7 +77,7 @@ function editBook(e) {
           // Update library database
           http.put(`http://localhost:3000/books/${id}`, book)
             .then(data => {
-              console.log('Library edited');
+              // console.log('Library edited');
               ui.alertUpdateDelete('edit');
               parentRow.className = '';
               getBooks();
@@ -105,7 +105,7 @@ function deleteBook(e) {
     parentRow.remove();
     http.delete(`http://localhost:3000/books/${id}`)
       .then(data => {
-        console.log('Book removed');
+        // console.log('Book removed');
         ui.alertUpdateDelete('delete');
         getBooks();
       })

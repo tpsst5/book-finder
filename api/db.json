@@ -1,3 +1,10 @@
 {
-  "books": []
+  "books": [
+    {
+      "id": 1,
+      "title": "Born a Crime",
+      "author": "Trevor Noah",
+      "genre": "Biography & Autobiography"
+    }
+  ]
 }
