@@ -2,15 +2,15 @@
   "books": [
     {
       "id": 1,
-      "title": "The Afterlife of Edgar Allan Poe",
-      "author": "Scott Peeples",
-      "genre": "Biography & Autobiography"
+      "title": "Pattern Recognition and Machine Learning",
+      "author": "Christopher M. Bishop",
+      "genre": "Computers"
     },
     {
       "id": 2,
-      "title": "The Cambridge Companion to Edgar Allan Poe",
-      "author": "Kevin J. Hayes,University Kevin J Hayes",
-      "genre": "Biography & Autobiography"
+      "title": "The Tribes of Umtata District",
+      "author": "W. D. Hammond-Tooke",
+      "genre": "Blacks"
     }
   ]
 }

@@ -11,6 +11,8 @@ document.querySelector('.btn-search').addEventListener('click', searchBooks);
 document.addEventListener('DOMContentLoaded', getBooks);
 document.querySelector('#library-body').addEventListener('click', editBook);
 document.querySelector('#library-body').addEventListener('click', deleteBook);
+document.querySelector('#library-link').addEventListener('click', ui.smoothScroll);
+
 const modalBody = document.querySelector('.modal-body');
 
 // Get books on DOM load
@@ -37,7 +39,6 @@ function searchBooks() {
       `)
       .then(data => {
         ui.searchBooks(data.items);
-        ui.addBook(data.items);
         searchInput.value = '';
       })
       .catch(err => console.log(err));
@@ -95,6 +96,7 @@ function editBook(e) {
   e.preventDefault();
 }
 
+// Delete book from library 
 function deleteBook(e) {
   if (e.target.parentElement.classList.contains('delete-book')) {
     // Get row of book

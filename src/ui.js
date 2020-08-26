@@ -37,6 +37,7 @@ class UI {
   // Show searched books
   searchBooks(books) {
     this.modalLabel.textContent = 'Search results';
+    const modalBody = document.querySelector('.modal-content');
     let bookList = [];
     let output = '';
 
@@ -93,8 +94,20 @@ class UI {
         </div>
       `;
     });
-
+    // Display modal html
     this.modalBody.innerHTML = output;
+
+    // Listen for click on each book button
+    const bookBtns = document.querySelectorAll('.add-book');
+    bookBtns.forEach(book => book.addEventListener('click', bookSelected));
+
+    // Select a book
+    function bookSelected(event) {
+      // Pass in selected book data to ui.addBook()
+      ui.addBook(books[event.target.id].volumeInfo);
+
+      event.preventDefault();
+    }
   }
 
 
@@ -110,90 +123,78 @@ class UI {
   }
 
 
-  // Add a book from list to library
-  addBook(books) {
+  // Called from searchBooks(). Add a book from list to library
+  addBook(book) {
+    let lastBookId = 0;
 
-    // GETTING ERROR THAT PROGRESSES IN STAGES. STARTS ONCE YOU CLOSE MODULE AND TRY TO ADD ANOTHER BOOK. THEN AFTER YOU CLOSE THE MODULE AGAIN AND TRY TO ADD ANOTHER BOOK YOU GET BOTH THE SUCCESS AND FAIL ALERTS...
-
-    // Listen for click event inside modal display
-    this.modalBody.addEventListener('click', bookSelected);
-
-    // Select a book
-    function bookSelected(event) {
-      if (event.target.classList.contains('add-book')) {
-        addSelectedBook(event.target);
-      }
+    // Check if there are books in library then last book ID equals last item
+    if (document.querySelector('#library-body').lastElementChild) {
+      lastBookId = Number(document.querySelector('#library-body').lastElementChild.id);
     }
 
-    function addSelectedBook(book) {
-      // Variables
-      const selectedId = book.getAttribute('data-id');
-      let lastBookId = 0;
-      // Check if there are books in library then last book ID
-      if (document.querySelector('#library-body').lastElementChild) {
-        lastBookId = Number(document.querySelector('#library-body').lastElementChild.id);
-      }
-      let id = lastBookId + 1;
-      const title = book.parentElement.firstElementChild.innerText.slice(7);
-      const author = book.parentElement.firstElementChild.nextElementSibling.innerText.slice(8);
+    let id = lastBookId + 1;
 
-      let genre = '';
-      // Check if genre is available for selected book
-      if (!books[selectedId].volumeInfo.categories) {
-        genre = 'Not available';
+    const title = book.title;
+
+    // Check for authors
+    let author = null;
+    (book.authors) ? author = book.authors[0]: author = 'Not available';
+
+    // Check for genre
+    let genre = null;
+    (book.categories) ? genre = book.categories[0]: genre = 'Not avalaible';
+
+    // Book to be added to library
+    const newBook = {
+      id,
+      title,
+      author,
+      genre
+    }
+
+    // Get current book database to check if selected book is in library
+    http.get('http://localhost:3000/books/')
+      .then(data => checkLibrary(data))
+      .catch(err => console.log(err))
+
+    function checkLibrary(data) {
+      let inLibrary = null;
+      data.forEach(book => {
+        if (book.title === newBook.title && book.author === newBook.author) {
+          inLibrary = true;
+        }
+      });
+
+      // If book is already in library display error. If not continue
+      if (inLibrary === true) {
+        // Show error since book is already in library
+        document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade show";
+        // Hide after 3 seconds
+        setTimeout(function () {
+          document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade hide";
+        }, 3000);
       } else {
-        genre = books[selectedId].volumeInfo.categories[0];
-      }
-      // Book to be added to library
-      const newBook = {
-        id,
-        title,
-        author,
-        genre
-      }
-      // Get current book database to check if selected book is in library
-      http.get('http://localhost:3000/books/')
-        .then(data => checkLibrary(data))
-        .catch(err => console.log(err))
+        // POST book to library
+        http.post('http://localhost:3000/books', newBook)
+          .then(data => refreshLibrary())
+          .catch(err => console.log(err));
 
-      function checkLibrary(data) {
-        console.log(newBook);
-        console.log(data);
-        let inLibrary = null;
-        data.forEach(book => {
-          if (book.title === newBook.title && book.author === newBook.author) {
-            inLibrary = true;
-          }
-        });
-        // If book is already in library display error. If not continue
-        if (inLibrary === true) {
-          // Show error since book is already in library
-          document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade show";
-          // Hide after 3 seconds
+        // GET data and refresh library UI
+        function refreshLibrary() {
+          http.get('http://localhost:3000/books/')
+            .then(data => ui.showBooks(data))
+            .then(successAlert())
+            .catch(err => console.log(err))
+        }
+
+        // Show success alert
+        function successAlert() {
+          document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade show";
+
+          // Hide alert after 3 seconds
           setTimeout(function () {
-            document.querySelector('.alert-warning').className = "alert alert-warning alert-dismissible fade hide";
+            document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade hide";
           }, 3000);
-        } else {
-          // POST book to library
-          http.post('http://localhost:3000/books', newBook)
-            .then(data => refreshLibrary())
-            .catch(err => console.log(err));
-
-          // GET data and refresh library UI
-          function refreshLibrary() {
-            http.get('http://localhost:3000/books/')
-              .then(data => ui.showBooks(data))
-              .then(successAlert())
-              .catch(err => console.log(err))
-          }
-          // Show success alert
-          function successAlert() {
-            document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade show";
-            // Hide alert after 3 seconds
-            setTimeout(function () {
-              document.querySelector('.alert-success').className = "alert alert-success alert-dismissible fade hide";
-            }, 3000);
-          }
         }
       }
     }
@@ -206,6 +207,7 @@ class UI {
       // Change alert text for edit and show alert
       document.querySelector('#edit-del-alert').innerText = "Edit complete";
       document.querySelector('#edit-del-alert').className = "alert alert-primary text-center fade show";
+
       // Hide alert after 3 seconds
       setTimeout(function () {
         document.querySelector('#edit-del-alert').className = "alert alert-primary text-center fade hide";
@@ -214,11 +216,39 @@ class UI {
       // Change alert text for delete and show alert
       document.querySelector('#edit-del-alert').innerText = "Book deleted";
       document.querySelector('#edit-del-alert').className = "alert alert-danger text-center fade show";
+
       // Hide alert after 3 seconds
       setTimeout(function () {
         document.querySelector('#edit-del-alert').className = "alert alert-danger text-center fade hide";
       }, 3000);
     }
+  }
+
+
+  // Smooth scroll to library section
+  smoothScroll() {
+    const library = document.querySelector('#library');
+    const libraryPosition = library.getBoundingClientRect().top;
+    const startPosition = window.pageYOffset;
+    const distance = libraryPosition - startPosition;
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const run = ease(timeElapsed, startPosition, distance, 1000);
+      window.scrollTo(0, run);
+      if (timeElapsed < 1000) requestAnimationFrame(animation);
+    }
+
+    function ease(t, b, c, d) {
+      t /= d / 2;
+      if (t < 1) return c / 2 * t * t + b;
+      t--;
+      return -c / 2 * (t * (t - 2) - 1) + b;
+    }
+
+    requestAnimationFrame(animation);
   }
 }
 
